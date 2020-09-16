@@ -259,7 +259,7 @@ class WebformTealiumHandler extends WebformHandlerBase {
       $properties[$field_id] = $value;
     }
 
-    $this->tealiumService->setProperties($properties);
+    $this->tealiumService->helper->storeProperties($properties);
 
   }
 

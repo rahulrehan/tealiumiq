@@ -12,6 +12,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -85,6 +86,13 @@ class Helper {
   private $entityTypeBundleInfo;
 
   /**
+   * Temporary store.
+   *
+   * @var \Drupal\Core\TempStore\PrivateTempStore
+   */
+  private $tempStore;
+
+  /**
    * Helper constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -105,6 +113,8 @@ class Helper {
    *   RouteMatchInterface.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
    *   EntityTypeBundleInfoInterface.
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $tempStoreFactory
+   *   PrivateTempStoreFactory.
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager,
                               GroupPluginManager $groupPluginManager,
@@ -114,7 +124,8 @@ class Helper {
                               LanguageManagerInterface $languageManager,
                               TealiumiqToken $token,
                               RouteMatchInterface $routeMatch,
-                              EntityTypeBundleInfoInterface $entityTypeBundleInfo) {
+                              EntityTypeBundleInfoInterface $entityTypeBundleInfo,
+                              PrivateTempStoreFactory $tempStoreFactory) {
     $this->entityTypeManager = $entityTypeManager;
     $this->groupPluginManager = $groupPluginManager;
     $this->tagPluginManager = $tagPluginManager;
@@ -124,6 +135,7 @@ class Helper {
     $this->tokenService = $token;
     $this->routeMatch = $routeMatch;
     $this->entityTypeBundleInfo = $entityTypeBundleInfo;
+    $this->tempStore = $tempStoreFactory->get('tealiumiq');
   }
 
   /**
@@ -443,7 +455,12 @@ class Helper {
    *   Tags if found or empty array.
    */
   public function tagsFromRoute($entity = NULL) {
-    $tealiumiqTags = [];
+
+    // Get any tags set earlier in the request.
+    $tealiumiqTags = $this->tempStore->get('tags') ?? [];
+
+    // Clear out the temp store so that they don't persist for future requests.
+    $this->tempStore->delete('tags');
 
     if (!$entity) {
       $entity = $this->routeEntity();
@@ -454,7 +471,7 @@ class Helper {
       // so do not generate tealiumiq tags for entity which
       // has not been created yet.
       if ($entity->id()) {
-        $tealiumiqTags = $this->tagsFromEntity($entity);
+        $tealiumiqTags = array_merge($this->tagsFromEntity($entity), $tealiumiqTags);
       }
     }
 
@@ -609,6 +626,18 @@ class Helper {
     }
 
     return $properties;
+  }
+
+  /**
+   * Store properties to be used when the page is rendered.
+   *
+   * @param array $properties
+   *   Tags array.
+   *
+   * @throws \Drupal\Core\TempStore\TempStoreException
+   */
+  public function storeProperties(array $properties) {
+    $this->tempStore->set('tags', $properties);
   }
 
 }
