@@ -59,6 +59,12 @@ function tealiumiq_theme($existing, $type, $theme, $path) {
         'utagdata' => NULL,
       ],
     ],
+    'webform_handler_webform_tealiumiq_summary' => [
+      'variables' => [
+        'settings' => NULL,
+        'handler' => NULL,
+      ],
+    ],
   ];
 }
 
