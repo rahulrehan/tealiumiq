@@ -428,7 +428,7 @@ class Helper {
    * @return mixed|null
    *   Return Entity.
    */
-  public function getEnityFromRoute() {
+  public function getEntityFromRoute() {
     $entity = $this->routeEntity();
     return $entity;
   }
@@ -590,13 +590,13 @@ class Helper {
   }
 
   /**
-   * Return tokenkised values for raw tags.
+   * Return tokenised values for raw tags.
    *
    * @param array $tealiumiqTags
    *   Raw tags.
    *
    * @return array
-   *   tokenised tags.
+   *   Tokenised tags.
    */
   public function tokenisedTags(array $tealiumiqTags) {
     $properties = [];

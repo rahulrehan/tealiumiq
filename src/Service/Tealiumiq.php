@@ -144,7 +144,7 @@ class Tealiumiq {
   }
 
   /**
-   * Get Account Value.
+   * Get account value.
    *
    * @return string
    *   Account value.
@@ -154,20 +154,20 @@ class Tealiumiq {
   }
 
   /**
-   * Get profile Value.
+   * Get profile value.
    *
    * @return string
-   *   profile value.
+   *   Profile value.
    */
   public function getProfile() {
     return $this->profile;
   }
 
   /**
-   * Get environment Value.
+   * Get environment value.
    *
    * @return string
-   *   environment value.
+   *   Environment value.
    */
   public function getEnvironment() {
     return $this->environment;
@@ -275,7 +275,7 @@ class Tealiumiq {
       $newProperties = array_merge($defaultValues, $newProperties);
     }
 
-    // Allow other modules to property variables before we send it.
+    // Allow other modules to alter properties before we send it.
     $alterUDOPropertiesEvent = new AlterUdoPropertiesEvent(
       $this->udo->getNamespace(),
       $newProperties
@@ -293,14 +293,14 @@ class Tealiumiq {
       $tealiumiqTags = array_merge($tealiumiqTags, $properties);
     }
 
-    // Dont proceed if there are no tags.
+    // Don't proceed if there are no tags.
     if (empty($tealiumiqTags)) {
       return;
     }
 
     // Process tokens.
     if (!$entity) {
-      $entity = $this->helper->getEnityFromRoute();
+      $entity = $this->helper->getEntityFromRoute();
     }
 
     $tealiumiqTagsTokenised = [];
