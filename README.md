@@ -1,8 +1,8 @@
 # Tealium iQ Tag Management
 [![CircleCI](https://circleci.com/gh/dakkusingh/tealiumiq.svg?style=svg)](https://circleci.com/gh/dakkusingh/tealiumiq)
-The Tealium iQ tag management system puts you in control of 
-your marketing technology implementations making it easy to 
-deploy new vendor tags and make edits to existing ones in our 
+The Tealium iQ tag management system puts you in control of
+your marketing technology implementations making it easy to
+deploy new vendor tags and make edits to existing ones in our
 user friendly console.
 
 This module provides Drupal 8 integration with Tealium iQ.
@@ -25,11 +25,11 @@ The primary features include:
 - A plugin interface allowing for additional Tealium tags to be easily
  added via custom modules.
  - Tokens may be used to automatically assign values.
- 
-## Usage scenario - Tealium Tags Field 
+
+## Usage scenario - Tealium Tags Field
 ### Install the module.
 - Open admin/config/services/tealiumiq.
-- Add the Tealium iQ account details. 
+- Add the Tealium iQ account details.
 
 ### Add Tealium Tags Field
 - To adjust Tealium Tags for a specific entity, the Tealium field must
@@ -43,7 +43,7 @@ The primary features include:
 - If the site supports multiple languages, and translations have been
  enabled for this entity, select "Users may translate this field" to
   use Drupal's translation system.
-  
+
 ## Usage Schenario - As API
 todo - write documentation
 
@@ -55,21 +55,26 @@ This setting can be changed at:
 `admin/config/services/tealiumiq`
 
 ### Asynchronous Loading
-With asynchronous tracking, the browser can load the different 
-tags in parallel. It no longer has to wait for a certain tag to 
-load completely before moving on to the next or the rest of the page 
+With asynchronous tracking, the browser can load the different
+tags in parallel. It no longer has to wait for a certain tag to
+load completely before moving on to the next or the rest of the page
 content.
 
 ![tealium_async](https://tealium.com/wp-content/uploads/2015/03/oct-11-asynchronous-tags.gif)
 
 ### Synchronous Loading
-When a page loads a synchronous tag, it waits for the tag content to 
-load before moving on to the next content. The figure below shows an 
-example of a page loading 4 tags in a synchronous or serial manner. 
-The page starts by loading the first tag. After the tag has been 
+When a page loads a synchronous tag, it waits for the tag content to
+load before moving on to the next content. The figure below shows an
+example of a page loading 4 tags in a synchronous or serial manner.
+The page starts by loading the first tag. After the tag has been
 completely loaded, the page moves on the second tag.
 
 ![tealium_iq](https://tealium.com/wp-content/uploads/2015/03/oct-11-synchronous-tags.gif)
 
-### Official documentation: 
+## Usage Scenario - Webform Submissions
+To add Tealium tags based on submitted webform data, add the "TealiumIQ" handler to the form.
+See [this video](https://www.youtube.com/watch?v=oMCqqBJfWnk) for more information on webform handlers.
+You can then configure the mapping of form field values to tags.
+
+### Official documentation:
 https://tealium.com/blog/standard/asynchronous-tagging/
