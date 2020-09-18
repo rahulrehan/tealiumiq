@@ -240,6 +240,20 @@ class WebformTealiumHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
+  public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+
+    $is_ajax = $this->getWebform()->getSetting('ajax');
+    if ($is_ajax) {
+      $form['#attached']['library'][] = 'tealiumiq/tealiumiq_webform_ajax';
+      $form['actions']['submit']['#ajax'] = [
+        'callback' => 'tealiumiq_webform_ajax_callback',
+      ];
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
 
     // Do nothing if the form is not yet complete.
