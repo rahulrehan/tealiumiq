@@ -10,9 +10,6 @@
  * @ingroup themeable
  */
 #}
-<dl>
-  {% for key, setting in settings.tealiumiq_field_mapping %}
-    <dt>{{ key }}</dt>
-    <dd>{{ setting }}</dd>
-  {% endfor %}
-</dl>
+{% for key, setting in settings.tealiumiq_field_mapping %}
+  <b>{{ key }}</b>: {{ setting }}<br/>
+{% endfor %}
