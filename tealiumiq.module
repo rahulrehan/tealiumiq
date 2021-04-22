@@ -5,8 +5,10 @@
  * Tealium iQ Integration.
  */
 
+use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_page_attachments().
@@ -57,6 +59,12 @@ function tealiumiq_theme($existing, $type, $theme, $path) {
       'variables' => [
         'utagurl' => NULL,
         'utagdata' => NULL,
+      ],
+    ],
+    'webform_handler_webform_tealiumiq_summary' => [
+      'variables' => [
+        'settings' => NULL,
+        'handler' => NULL,
       ],
     ],
   ];
@@ -162,4 +170,42 @@ function tealiumiq_entity_base_field_info(EntityTypeInterface $entity_type) {
   }
 
   return $fields;
+}
+
+/**
+ * Webform submission callback to prepare TealiumIQ tags.
+ *
+ * @param array $form
+ *   The form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ *
+ * @return \Drupal\webform\Ajax\WebformSubmissionAjaxResponse
+ *   An ajax response.
+ */
+function tealiumiq_webform_ajax_callback(&$form, FormStateInterface $form_state) {
+
+  /** @var \Drupal\webform\WebformSubmissionForm $form_object */
+  $form_object = $form_state->getFormObject();
+
+  // If errors, call the default #ajax callback.
+  // @see \Drupal\webform\Form\WebformAjaxFormTrait::submitAjaxForm
+  if ($form_state->hasAnyErrors()) {
+    /** @var \Drupal\webform\Ajax\WebformSubmissionAjaxResponse $response */
+    $response = $form_object->submitAjaxForm($form, $form_state);
+  }
+  else {
+    // No errors, so call the default callback.
+    /** @var \Drupal\webform\Ajax\WebformSubmissionAjaxResponse $response */
+    $response = $form_object->submitAjaxForm($form, $form_state);
+
+    // Get the tags, including any from the form handler.
+    $tags = \Drupal::service('tealiumiq.helper')->tagsFromRoute();
+
+    // Invoke our callback, adding the tags.
+    /** InvokeCommand($selector, $method, array $arguments = []) */
+    $response->addCommand(new InvokeCommand(NULL, 'tealiumiqWebformAjaxSubmit', [$tags]));
+  }
+
+  return $response;
 }

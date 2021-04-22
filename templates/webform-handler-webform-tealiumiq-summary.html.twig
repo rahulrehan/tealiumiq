@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a summary of a webform TealiumIQ handler.
+ *
+ * Available variables:
+ * - settings: The current configuration for this handler.
+ * - handler: The handler.
+ *
+ * @ingroup themeable
+ */
+#}
+{% for key, setting in settings.tealiumiq_field_mapping %}
+  <b>{{ key }}</b>: {{ setting }}<br/>
+{% endfor %}

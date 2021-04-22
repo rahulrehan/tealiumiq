@@ -6,3 +6,12 @@ tealiumiq_async:
     - core/drupal
     - core/jquery
     - core/drupalSettings
+
+tealiumiq_webform_ajax:
+  version: 1.x
+  js:
+    js/tealiumiq_webform_ajax.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/drupalSettings
